@@ -1,6 +1,5 @@
 ﻿using BlazorCRUDThreeTiered.Business.DTOs;
 using BlazorCRUDThreeTiered.Business.Entities;
-using System.Net.Http;
 using System.Net.Http.Json;
 
 namespace BlazorCRUDThreeTiered.Client.Services
@@ -21,10 +20,11 @@ namespace BlazorCRUDThreeTiered.Client.Services
             return response!;
         }
 
-        public async Task<List<Department>> GetAsync() => await httpClient.GetFromJsonAsync<List<Department>>("api/department");
+        public async Task<List<Department>?> GetAsync() =>
+            await httpClient.GetFromJsonAsync<List<Department>>("api/department");
 
-        public async Task<Department> GetByIdAsync(int id)
-     => await httpClient.GetFromJsonAsync<Department>($"api/department/{id}");
+        public async Task<Department?> GetByIdAsync(int id) =>
+            await httpClient.GetFromJsonAsync<Department>($"api/department/{id}");
 
         public async Task<ServiceResponse> UpdateAsync(Department department)
         {

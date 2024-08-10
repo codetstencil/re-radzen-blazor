@@ -15,6 +15,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https:/
 
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+
 builder.Services.AddScoped<BlazoredToast>();
 builder.Services.AddScoped<IToastService, ToastService>();
 builder.Services.AddRadzenComponents();

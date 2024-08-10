@@ -10,12 +10,12 @@
                 AllowPaging="true"
                 ShowPagingSummary="true"
                 FilterCaseSensitivity="Radzen.FilterCaseSensitivity.CaseInsensitive"
-                Data="@departments"
+                Data="@_departments"
                 EmptyText="No department records at the moment"
                 TItem="Department">
     <Columns>
-        <RadzenDataGridColumn TItem="Department" Property="Id" Title="ID" Frozen="true" Width="160px" />
-        <RadzenDataGridColumn TItem="Department" Property="DepartmentName" Title="Name" Width="160px" />
+        @*         <RadzenDataGridColumn TItem="Department" Property="Id" Title="ID" Frozen="true" Width="160px" />*@
+         <RadzenDataGridColumn TItem="Department" Property="DepartmentName" Title="Name" Width="160px" />
         <RadzenDataGridColumn Context="Department" 
                               Filterable="false"
                               Sortable="false"
@@ -38,98 +38,92 @@
 
 
 @code {
-    Department department = new();
-    List<Department> departments = new();
+    Department _department = new();
+    List<Department>? _departments = [];
 
     //get the list of departments
-    private async Task GetDept() => departments = await dept.GetAsync();
+    private async Task GetDept() => _departments = await Dept.GetAsync();
 
     //call the method when page is initialized
-    protected async override Task OnInitializedAsync()
-    {
-        await GetDept();
-    }
-
+    protected override async Task OnInitializedAsync() => await GetDept();
 
     async Task Save()
     {
         try
         {
-            if (string.IsNullOrEmpty(department.DepartmentName))
+            if (string.IsNullOrEmpty(_department.DepartmentName))
             {
-                toastService.ShowError("Please supply all department details before proceeding.");
+                ToastService.ShowError("Please supply all department details before proceeding.");
                 return;
             }
 
 
-            var response = new ServiceResponse(false, null!);
-            if (department.Id > 0)
-                response = await dept.UpdateAsync(department);
+            ServiceResponse response;
+            if (_department.Id > 0)
+                response = await Dept.UpdateAsync(_department);
             else
-                response = await dept.AddAsync(department);
+                response = await Dept.AddAsync(_department);
 
             if (!response.Flag)
             {
-                toastService.ShowError("An error occurred while saving department.");
+                ToastService.ShowError("An error occurred while saving department.");
                 return;
             }
             else
             {
                 DialogService1.Close();
-                toastService.ShowSuccess($"Department details saved successfully.");
+                ToastService.ShowSuccess($"Department details saved successfully.");
                 await GetDept();
-                department = new();
+                _department = new();
             }
         }
         catch (Exception ex)
         {
-            toastService.ShowError(ex.ToString());
+            ToastService.ShowError(ex.ToString());
             return;
         }
-
-
     }
 
 
-    private void EditClicked(Department inconDept)
+    private void EditClicked(Department department)
     {
-        department = inconDept;
-        ShowInlineDialog();
+        _department = department;
+        _ = ShowInlineDialog();
     }
 
 
     private void CreateClicked()
     {
-        department = new();
-        ShowInlineDialog();
+        _department = new();
+        _ = ShowInlineDialog();
     }
 
     public int DeleteId { get; set; }
     private async Task DeleteClicked(Department department)
     {
-        var response = await dept.DeleteAsync(department.Id);
+        var response = await Dept.DeleteAsync(department.Id);
         await GetDept();
         DeleteId = 0;
         StateHasChanged();
-        toastService.ShowSuccess($"Department deleted successfully.");
+        ToastService.ShowSuccess($"Department deleted successfully.");
     }
 
 
     void OnInvalidSubmit(FormInvalidSubmitEventArgs args)
     {
-        toastService.ShowError($"InvalidSubmit: {JsonSerializer.Serialize(args, new JsonSerializerOptions() { WriteIndented = true })}");
+        ToastService.ShowError($"InvalidSubmit: {JsonSerializer.Serialize(args, new JsonSerializerOptions() { WriteIndented = true })}");
     }
 
 
-      async Task ShowInlineDialog()
+    async Task ShowInlineDialog()
     {
     var result = await DialogService1.OpenAsync("Create Department", ds =>
     @<RadzenStack>
-        <RadzenTemplateForm Name="DepartmentDialog" TItem="Department" Data=department Submit="Save" InvalidSubmit="OnInvalidSubmit">
+        <RadzenTemplateForm Name="DepartmentDialog" TItem="Department" Data=_department Submit="Save" InvalidSubmit="OnInvalidSubmit">
             <RadzenStack>
                 <RadzenFormField Text="DepartmentName" Variant="Variant.Outlined">
                     <ChildContent>
-                        <RadzenTextBox Name="DepartmentName" @bind-Value=department.DepartmentName />
+                        <RadzenTextBox Name="DepartmentName" @bind-Value=_department.DepartmentName />
                     </ChildContent>
                     <Helper>
                         <RadzenRequiredValidator Component="DepartmentName" Text="Department name is required." />

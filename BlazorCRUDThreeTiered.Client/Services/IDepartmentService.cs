@@ -8,7 +8,7 @@ namespace BlazorCRUDThreeTiered.Client.Services
         Task<ServiceResponse> AddAsync(Department department);
         Task<ServiceResponse> UpdateAsync(Department department);
         Task<ServiceResponse> DeleteAsync(int id);
-        Task<List<Department>> GetAsync();
-        Task<Department> GetByIdAsync(int id);
+        Task<List<Department>?> GetAsync();
+        Task<Department?> GetByIdAsync(int id);
     }
 }

@@ -20,10 +20,11 @@ namespace BlazorCRUDThreeTiered.Client.Services
             return response!;
         }
 
-        public async Task<List<Employee>> GetAsync() => await httpClient.GetFromJsonAsync<List<Employee>>("api/employee");
+        public async Task<List<Employee>?> GetAsync() => 
+            await httpClient.GetFromJsonAsync<List<Employee>>("api/employee");
 
-        public async Task<Employee> GetByIdAsync(int id)
-      => await httpClient.GetFromJsonAsync<Employee>($"api/employee/{id}");
+        public async Task<Employee?> GetByIdAsync(int id) => 
+            await httpClient.GetFromJsonAsync<Employee>($"api/employee/{id}");
 
         public async Task<ServiceResponse> UpdateAsync(Employee employee)
         {
