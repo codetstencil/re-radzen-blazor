@@ -37,13 +37,13 @@
 </RadzenDataGrid>
 
 @code{
-      Employee _employee = new();
+    Employee _employee = new();
        Department _department = new();
        List<Employee>? _employees = [];
       List<Department>? _departments = [];
 
-    private async Task GetData() => _employees = await Emp.GetAsync();
-    private async Task GetDept()=> _departments = await Dept.GetAsync();
+    private async Task GetData() => _employees = await EmployeeServ.GetAsync();
+    private async Task GetDept() => _departments = await DepartmentServ.GetAsync();
 
 
     protected override async Task OnInitializedAsync()
@@ -71,9 +71,9 @@
          
             var response = new ServiceResponse(false, null!);
             if (_employee.Id > 0)
-                response = await Emp.UpdateAsync(_employee);
+                response = await EmployeeServ.UpdateAsync(_employee);
             else
-                response = await Emp.AddAsync(_employee);
+                response = await EmployeeServ.AddAsync(_employee);
 
             if (!response.Flag)
             {
@@ -111,7 +111,7 @@
     public int DeleteId { get; set; }
     private async Task DeleteClicked(Employee employee)
     {
-        var response = await Emp.DeleteAsync(employee.Id);
+        var response = await EmployeeServ.DeleteAsync(employee.Id);
         await GetData();
         DeleteId = 0;
         StateHasChanged();

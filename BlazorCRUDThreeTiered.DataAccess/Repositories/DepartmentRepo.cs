@@ -2,11 +2,6 @@
 using BlazorCRUDThreeTiered.Business.Entities;
 using BlazorCRUDThreeTiered.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlazorCRUDThreeTiered.DataAccess.Repositories
 {
@@ -36,7 +31,7 @@ namespace BlazorCRUDThreeTiered.DataAccess.Repositories
         public async Task<List<Department>> GetAsync() =>
               await appDbContext.Departments.AsNoTracking().ToListAsync();
 
-        public async Task<Department> GetByIdAsync(int id) =>
+        public async Task<Department?> GetByIdAsync(int id) =>
             await appDbContext.Departments.FindAsync(id);
 
         public async Task<ServiceResponse> UpdateAsync(Department department)

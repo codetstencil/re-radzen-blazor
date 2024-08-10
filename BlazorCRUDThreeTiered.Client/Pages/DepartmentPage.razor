@@ -42,7 +42,7 @@
     List<Department>? _departments = [];
 
     //get the list of departments
-    private async Task GetDept() => _departments = await Dept.GetAsync();
+    private async Task GetDept() => _departments = await DepartmentServ.GetAsync();
 
     //call the method when page is initialized
     protected override async Task OnInitializedAsync() => await GetDept();
@@ -57,12 +57,12 @@
                 return;
             }
 
-
+            
             ServiceResponse response;
             if (_department.Id > 0)
-                response = await Dept.UpdateAsync(_department);
+                response = await DepartmentServ.UpdateAsync(_department);
             else
-                response = await Dept.AddAsync(_department);
+                response = await DepartmentServ.AddAsync(_department);
 
             if (!response.Flag)
             {
@@ -101,7 +101,7 @@
     public int DeleteId { get; set; }
     private async Task DeleteClicked(Department department)
     {
-        var response = await Dept.DeleteAsync(department.Id);
+        var response = await DepartmentServ.DeleteAsync(department.Id);
         await GetDept();
         DeleteId = 0;
         StateHasChanged();

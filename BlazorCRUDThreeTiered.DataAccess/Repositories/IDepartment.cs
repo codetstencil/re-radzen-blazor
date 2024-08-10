@@ -1,10 +1,5 @@
 ﻿using BlazorCRUDThreeTiered.Business.DTOs;
 using BlazorCRUDThreeTiered.Business.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlazorCRUDThreeTiered.DataAccess.Repositories
 {
@@ -14,6 +9,6 @@ namespace BlazorCRUDThreeTiered.DataAccess.Repositories
         Task<ServiceResponse> UpdateAsync(Department department);
         Task<ServiceResponse> DeleteAsync(int id);
         Task<List<Department>> GetAsync();
-        Task<Department> GetByIdAsync(int id);
+        Task<Department?> GetByIdAsync(int id);
     }
 }

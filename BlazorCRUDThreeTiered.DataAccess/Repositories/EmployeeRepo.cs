@@ -2,11 +2,6 @@
 using BlazorCRUDThreeTiered.Business.Entities;
 using BlazorCRUDThreeTiered.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlazorCRUDThreeTiered.DataAccess.Repositories
 {
@@ -40,7 +35,7 @@ namespace BlazorCRUDThreeTiered.DataAccess.Repositories
             .ToListAsync();
 
         private async Task SaveChangesAsync() => await appDbContext.SaveChangesAsync();
-        public async Task<Employee> GetByIdAsync(int id) =>
+        public async Task<Employee?> GetByIdAsync(int id) =>
             await appDbContext.Employees.FindAsync(id);
 
 
@@ -57,7 +52,6 @@ namespace BlazorCRUDThreeTiered.DataAccess.Repositories
                 emp.EmailAddress = employee.EmailAddress;
                 emp.DepartmentId = employee.DepartmentId;
                 emp.ProfilePic = employee.ProfilePic;
-                //appDbContext.Update(employee);
                 await SaveChangesAsync();
                 return new ServiceResponse(true, "Updated");
             }
